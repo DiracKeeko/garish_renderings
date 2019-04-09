@@ -11,20 +11,17 @@
         }
 
         .box {
-            width: 320px;
+            width:320px;
             height: 400px;
+            border: 1px solid #000;
             position: absolute;
-            left: -300px;
-            top: 10px;
         }
-
-        .box .content {
-            width: 300px;
-            height: 400px;
+        .box .content{
+            width:300px;
+            height:400px;
             background-color: #9acd32;
         }
-
-        .box .nav {
+        .box .nav{
             width: 20px;
             height: 100px;
             background-color: #87ceeb;
@@ -34,22 +31,7 @@
         }
     </style>
 
-    <script type="text/javascript" src="jquery-1.12.3.min.js"></script>
     <script type="text/javascript">
-        window.onload = function () {
-            $(".box").mouseenter(function () {
-                $(".box").stop(true).animate({
-                    left: 0
-                }, 500);
-            });
-            
-            $(".box").mouseleave(function () {
-                $(".box").animate({
-                    left: -300
-                }, 500);
-            });
-            
-        };
     </script>
 </head>
 
