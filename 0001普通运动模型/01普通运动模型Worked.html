@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>01</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 320px;
+            height: 400px;
+            position: absolute;
+            left: -300px;
+            top: 10px;
+        }
+
+        .box .content {
+            width: 300px;
+            height: 400px;
+            background-color: #9acd32;
+        }
+
+        .box .nav {
+            width: 20px;
+            height: 100px;
+            background-color: #87ceeb;
+            position: absolute;
+            right: 0px;
+            bottom: 30px;
+        }
+
+        
+    </style>
+
+    <script type="text/javascript" src="jquery-1.12.3.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var box = document.getElementById("box");
+            var content = document.getElementById("content");
+            var nav = document.getElementById("nav");
+
+            nav.onclick = function(){
+                clearInterval(nav.timer);
+                var nowL;
+                nav.timer = setInterval(function(){
+                    nowL = parseInt(getStyle(box, "left"));
+                    box.style.left = nowL + 6 +"px";
+                    if(nowL >= 0){
+                        clearInterval(nav.timer);
+                        box.style.left = 0 +"px";
+                    }
+                },1);
+            };
+            box.onmouseleave = function(){
+                clearInterval(nav.timer);
+                clearInterval(box.timer);
+                var nowL;
+                box.timer = setInterval(function(){
+                    nowL = parseInt(getStyle(box, "left"));
+                    box.style.left = nowL - 10 +"px";
+                    if(nowL <= -300){
+                        clearInterval(box.timer);
+                        box.style.left = -300 +"px";
+                    }
+                },3);
+            }
+        };
+
+        function getStyle(obj, name) {
+            if(window.getComputedStyle) {
+                return getComputedStyle(obj, null)[name];
+            } else {
+                //IE8的方式，没有getComputedStyle()方法
+                return obj.currentStyle[name];
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="box" id="box">
+        <div class="content" id="content"></div>
+        <div class="nav" id="nav"></div>
+    </div>
+</body>
+
+</html>
