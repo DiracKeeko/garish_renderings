@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.outer{
+				width: 560px;
+				height: 300px;
+				margin: 100px auto;
+				border: 1px solid #000;
+				position: relative;
+				/* overflow: hidden; */
+			}
+			.outer .m_unit{
+				width: 560px;
+				height: 300px;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			.outer .m_unit ul{
+				list-style: none;
+			}
+			.outer .m_unit ul li{
+				width: 560px;
+				height: 300px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			.outer .m_unit ul li.first{
+				display: block;
+			}
+
+			.btns a{
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				top: 50%;
+				margin-top: -20px;
+				background-color: yellow;
+				z-index: 999;
+			}
+			.btns a.leftBtn{
+				left: 10px;
+			}
+			.btns a.rightBtn{
+				right: 10px;
+			}
+
+			.circles{
+				width: 150px;
+				height: 18px;
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+			}
+			.circles ol{
+			list-style: none;
+			}
+			.circles ol li{
+				float: left;
+				width: 18px;
+				height: 18px;
+				margin-right: 10px;
+				border-radius: 50%;
+				background-color: pink;
+				cursor: pointer;
+			}
+			.circles ol li.cur{
+				background-color: purple;
+			}
+		</style>
+
+		<script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+		<script type="text/javascript">
+			window.onload = function(){
+				var count = 0;
+				
+				// 获取outer，准备鼠标移入移出事件
+				var $outer = $(".outer");
+
+				var $lis = $(".m_unit ul li");
+				var liLength = $lis.length;
+				
+				// 获取按钮
+				var $leftBtn = $("#leftBtn");
+				var $rightBtn = $("#rightBtn");
+
+				var $oLis = $(".circles ol li");
+
+				
+				function fromRight(){
+					if($lis.is(":animated")){
+						return;
+					}
+					$lis.eq(count).fadeOut(800);
+					count++;
+					count = (count+liLength) % liLength;
+					$lis.eq(count).fadeIn(800);
+					//小圆点颜色变化
+					cirColor();
+				}
+				function fromLeft(){
+					if($lis.is(":animated")){
+						return;
+					}
+					$lis.eq(count).fadeOut(800);
+					count--;
+					count = (count+liLength) % liLength;
+					$lis.eq(count).fadeIn(800);
+					cirColor();
+				}
+
+				function cirColor() {
+					$oLis.removeClass("cur");
+					$oLis.eq(count).addClass("cur");
+				}
+
+				// 实现点击按钮图片移动功能
+				$rightBtn.click(function(){
+					fromRight();
+				});
+				$leftBtn.click(function(){
+					fromLeft();
+				});
+				
+				// 实现自动轮播
+				var timer;
+				timer = setInterval(function(){
+					fromRight();
+				},1500);
+
+				// // 实现鼠标移入轮播停止，鼠标移出轮播继续
+				$outer.mouseenter(function(){
+					clearInterval(timer);
+				});
+				$outer.mouseleave(function(){
+					timer = setInterval(function(){
+						fromRight();
+					},1500);
+				});
+
+				// 实现点击小圆点，图片轮播跳到相应位置
+				$oLis.click(function(){
+					var num = $(this).index();
+					if(num==count) {
+						alert("就是这张图");
+					} else{
+						$lis.eq(count).fadeOut(800);
+						$lis.eq(num).fadeIn(800);
+						count = num;
+						cirColor();
+					}
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<div class="outer">
+			<div class="m_unit">
+				<ul>
+					<li class="first"><a href="javascript:;"><img src="images/0.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/1.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/2.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/3.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/4.jpg"></a></li>
+				</ul>
+			</div>
+
+			<div class="btns">
+				<a href="javascript:;" class="leftBtn" id="leftBtn"></a>
+				<a href="javascript:;" class="rightBtn" id="rightBtn"></a>
+			</div>
+
+			<div class="circles">
+				<ol>
+					<li class="cur"></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ol>
+			</div>
+
+		</div>
+	</body>
+</html>

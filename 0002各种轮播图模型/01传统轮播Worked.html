@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.outer{
+				width: 560px;
+				height: 300px;
+				margin: 100px auto;
+				border: 1px solid #000;
+				position: relative;
+				overflow: hidden;
+			}
+			.outer .m_unit{
+				width: 5000px;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			.outer .m_unit ul{
+				list-style: none;
+			}
+			.outer .m_unit ul li{
+				float: left;
+				width: 560px;
+				height: 300px;
+			}
+
+			.btns a{
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				top: 50%;
+				margin-top: -20px;
+				background-color: yellow;
+				z-index: 999;
+			}
+			.btns a.leftBtn{
+				left: 10px;
+			}
+			.btns a.rightBtn{
+				right: 10px;
+			}
+
+			.circles{
+				width: 150px;
+				height: 18px;
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+			}
+			.circles ol{
+			list-style: none;
+			}
+			.circles ol li{
+				float: left;
+				width: 18px;
+				height: 18px;
+				margin-right: 10px;
+				border-radius: 50%;
+				background-color: pink;
+				cursor: pointer;
+			}
+			.circles ol li.cur{
+				background-color: purple;
+			}
+		</style>
+
+		<script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+		<script type="text/javascript">
+			window.onload = function(){
+				var count = 0;
+				var $m_unit = $("#m_unit");
+				var $lis = $m_unit.find("li");
+				console.log($lis[0]);
+				var liLength = $lis.length;
+				$lis.eq(0).clone().appendTo("ul");
+
+				var $oLis = $(".circles ol li");
+
+				$(".leftBtn").click(function(){
+					count--;
+					if(count<=-1){
+						count = liLength;
+						$m_unit.css("left",-560*count);
+						count--;
+					}
+					$m_unit.stop(true).animate({"left":-560*count},400,function(){
+						$oLis.removeClass("cur");
+						$oLis.eq(count).addClass("cur");
+					});
+				});
+				
+				$(".rightBtn").click(function(){
+					count++;
+					if(count >= liLength+1){
+						count = 0;
+						$m_unit.css("left",0);
+						count++;
+					}
+					$m_unit.stop(true).animate({"left":-560*count},400,function(){
+						if(count==liLength){
+							$oLis.removeClass("cur");
+							$oLis.eq(0).addClass("cur");
+						} else{
+							$oLis.removeClass("cur");
+							$oLis.eq(count).addClass("cur");
+						}
+					});
+				});
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div class="outer">
+			<div class="m_unit" id="m_unit">
+				<ul>
+					<li><a href="javascript:;"><img src="images/0.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/1.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/2.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/3.jpg"></a></li>
+					<li><a href="javascript:;"><img src="images/4.jpg"></a></li>
+				</ul>
+			</div>
+
+			<div class="btns">
+				<a href="javascript:;" class="leftBtn" id="leftBtn"></a>
+				<a href="javascript:;" class="rightBtn" id="rightBtn"></a>
+			</div>
+
+			<div class="circles">
+				<ol>
+					<li class="cur"></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ol>
+			</div>
+
+		</div>
+	</body>
+</html>

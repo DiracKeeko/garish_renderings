@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.yixing{
+			width: 670px;
+			height: 221px;
+			background: url(images/pic_bg.gif);
+			margin: 100px auto;
+			border: 1px solid #000;
+			position: relative;
+			overflow: hidden;
+		}
+		.yixing ul{
+			list-style: none;
+		}
+		.yixing ul li{
+			position: absolute;
+			opacity: 1;
+			filter:alpha(opacity=100);
+		}
+
+		/*img元素不会根据父亲来设置宽度、高度，所以我们就要写：*/
+		.yixing ul li img{
+			width: 100%;
+			height: 100%;
+		}
+
+		.yixing ul li.stateA{width: 55px;height: 37px;left:-63px;top: 84px; }
+		.yixing ul li.stateB{width: 71px;height: 54px;left:16px;top: 67px;}
+		.yixing ul li.stateC{width: 122px;height: 86px;left:104px;top: 35px;}
+		.yixing ul li.stateD{width: 161px;height: 112px;left:247px;top: 16px;}
+		.yixing ul li.stateE{width: 122px;height: 86px;left:433px;top: 35px;}
+		.yixing ul li.stateF{width: 73px;height: 54px;left:580px;top: 67px;}
+		.yixing ul li.stateG{width: 55px;height: 37px;left:678px;top: 84px;}
+	
+		.rightBtn{
+			position: absolute;
+			top: 151px;
+			right: 25px;
+			width: 40px;
+			height: 40px;
+		}
+		.leftBtn{
+			position: absolute;
+			top: 151px;
+			left: 25px;
+			width: 40px;
+			height: 40px;
+		}
+
+		</style>
+
+		<script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+		<script type="text/javascript">
+			window.onload = function(){
+				var lis = document.getElementsByTagName("li");
+
+				// 获取按钮
+				var $leftBtn = $("#leftBtn");
+				var $rightBtn = $("#rightBtn");
+
+				// 获取七个位置的宽高，左右距离信息，存入json数组
+				var jsonArr = [];
+				for(var i = 0; i<lis.length; i++){
+					// 获取的样式是带px的
+					jsonArr.push({
+						"width": $(lis[i]).css("width"),
+						"height": $(lis[i]).css("height"),
+						"left": $(lis[i]).css("left"),
+						"top": $(lis[i]).css("top")
+					});
+				}
+				
+				// 将lis变为真正的数组lisArr
+				var lisArr = [];
+				for(var i = 0; i<lis.length; i++){
+					lisArr.push(lis[i]);
+				} 
+
+				function fromRight() {
+					if($(lisArr).is(":animated")){
+						return;
+					}
+					for(var i = 1; i < lisArr.length; i++){
+						$(lisArr[i]).animate(jsonArr[i-1],600);
+					}
+					$(lisArr[0]).css(jsonArr[lisArr.length-1]);
+					lisArr.push(lisArr.shift());
+				}
+				function fromLeft() {
+					if($(lisArr).is(":animated")){
+						return;
+					}
+					for(var i = 0; i < lisArr.length-1; i++){
+						$(lisArr[i]).animate(jsonArr[i+1],600);
+					}
+					$(lisArr[lisArr.length-1]).css(jsonArr[0]);
+					lisArr.unshift(lisArr.pop());
+				}
+
+				$rightBtn.click(function(){
+					fromRight();
+				});
+				$leftBtn.click(function(){
+					fromLeft();
+				});
+				
+				// 设置定时器
+				var timer;
+				timer = setInterval(function(){
+					fromRight();
+				},1000);
+
+				// 鼠标移入移出事件
+				var $yixing = $("#yixing");
+				$yixing.mouseenter(function(){
+					clearInterval(timer);
+				});
+				$yixing.mouseleave(function(){
+					timer = setInterval(function(){
+					fromRight();
+					},1000);
+				});
+			}
+		</script>
+		
+	</head>
+	<body>
+		<div class="yixing" id="yixing">
+			<ul>
+				<li class="stateA"><img src="images/number/0.png" alt="" /></li>
+				<li class="stateB"><img src="images/number/1.png" alt="" /></li>
+				<li class="stateC"><img src="images/number/2.png" alt="" /></li>
+				<li class="stateD"><img src="images/number/3.png" alt="" /></li>
+				<li class="stateE"><img src="images/number/4.png" alt="" /></li>
+				<li class="stateF"><img src="images/number/5.png" alt="" /></li>
+				<li class="stateG"><img src="images/number/6.png" alt="" /></li>
+			</ul>
+			<div class="btns">
+				<a href="javascript:;" id="leftBtn" class="leftBtn"></a>
+				<a href="javascript:;" id="rightBtn" class="rightBtn"></a>
+			</div>
+		</div>
+	</body>
+</html>
